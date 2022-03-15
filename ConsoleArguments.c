@@ -11,7 +11,7 @@
 /**
  * @brief Indicates the start of a argument parser function. Should be defined with DEFINE_HANDLER(function_name) above ArgTable.
  */
-#define BEGIN_ARG_PARSER(function_name) size_t (function_name) (struct ConsoleArgumentSettings* _CAS, size_t argc, const char** argv, size_t index, size_t index_offset, char* ret){ \
+#define BEGIN_ARG_PARSER(function_name) size_t (function_name) (struct ConsoleArgumentSettings* _CAS, size_t argc, const char** argv, size_t index, size_t index_offset, enum RETURNVAL* ret){ \
 		if(index + 1 + index_offset >= argc){*ret = TOO_FEW_ARGS; return 0;}
 /**
  * @brief Indicates the end of an argument parser function.
@@ -20,7 +20,7 @@
 /**
  * @brief Indicates the start of a flag parser function. Should be defined with DEFINE_HANDLER(function_name) above ArgTable.
  */
-#define BEGIN_FLAG_PARSER(function_name) size_t (function_name) (struct ConsoleArgumentSettings* _CAS, size_t argc, const char** argv, size_t index, size_t index_offset, char* ret){
+#define BEGIN_FLAG_PARSER(function_name) size_t (function_name) (struct ConsoleArgumentSettings* _CAS, size_t argc, const char** argv, size_t index, size_t index_offset, enum RETURNVAL* ret){
 /**
  * @brief Indicates the end of an argument parser function.
  */
