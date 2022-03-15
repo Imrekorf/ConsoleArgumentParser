@@ -152,7 +152,7 @@ void getSoftwareVersion(struct Version* _V){
  * @return RETURNVAL return value with errors
  */
 enum RETURNVAL HandleConsoleArgs(const int argc, const char **argv){
-	if (argc < 1 + MINIMAL_ARGS_FOR_PROGRAM) {
+	if (argc < 1 + HAS_REQUIRED_ARGUMENTS) {
         printf("Not enough arguments, Use -h for help\n");
         return TOO_FEW_ARGS;
     }

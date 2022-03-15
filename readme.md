@@ -3,3 +3,11 @@ Parses command line argument based on predefined values, set in ConsoleArguments
 Supports multiple single character arguments in one argument like -abcde</br>
 Supports multiple multiple single character and fullname arguments aswell as mixed</br>
 Supports multiple values on a single argument
+
+after configuration the library can be used with
+```C
+int ret = HandleConsoleArgs(argc, argv);
+if(ret){
+	return 0; // return on specific functions
+}
+```
