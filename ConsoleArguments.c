@@ -10,9 +10,10 @@
 #define DEFINE_HANDLER(function_name) size_t (function_name) (struct ConsoleArgumentSettings* _CAS, size_t argc, const char** argv, size_t index, size_t index_offset, enum RETURNVAL* ret)
 /**
  * @brief Indicates the start of a argument parser function. Should be defined with DEFINE_HANDLER(function_name) above ArgTable.
+ * @param param_count the amount of parameters used for this argument
  */
-#define BEGIN_ARG_PARSER(function_name) size_t (function_name) (struct ConsoleArgumentSettings* _CAS, size_t argc, const char** argv, size_t index, size_t index_offset, enum RETURNVAL* ret){ \
-		if(index + 1 + index_offset >= argc){*ret = TOO_FEW_ARGS; return 0;}
+#define BEGIN_ARG_PARSER(function_name, param_count) size_t (function_name) (struct ConsoleArgumentSettings* _CAS, size_t argc, const char** argv, size_t index, size_t index_offset, enum RETURNVAL* ret){ \
+		if(index + param_count + index_offset >= argc){*ret = TOO_FEW_ARGS; return 0;}
 /**
  * @brief Indicates the end of an argument parser function.
  */
@@ -73,7 +74,7 @@ END_FLAG_PARSER()
 */
 
 /** argument parser example
-BEGIN_ARG_PARSER(handle_example_arg)
+BEGIN_ARG_PARSER(handle_example_arg, 1)
  	_CAS->val = argv[index + 1 + index_offset++]; // <- increases index_offset for the extra argument parsed.
  *ret = NORMAL_COND;
 END_ARG_PARSER
