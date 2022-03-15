@@ -16,7 +16,7 @@
 /** USER VALUES FOR ARGUMENT TABLE START HERE **/
 
 const struct nlist ArgTable[] = {
-	// {"example", 'e', &handle_xxxx_arg, "here comes a detailed explanation for when -h is used on the argument"},
+	// {"example", 'e', &handle_xxxx_arg, "-e, --example shows an example argument", "here comes a detailed explanation for when -h is used on the argument"},
 	
 
 
@@ -51,14 +51,18 @@ void printHelp(const char* programname, const char extended_help){
 	if(!extended_help){
 		printf("Usage: %s [OPTION...] [VALUE]\n", programname);
 		printf("Default usage: %s -r <record_time>\n", programname);
-		printf("\nInformational commands: \n\n");
 		printf("\t-h, --help for this message\n");
 		printf("\t-v, --version for version\n");
-		/** CUSTOM USER BRIEF HELP START HERE 												*********** important ***********		//////////// **/
-			//printf("-x, --XXXX\t\t -x flag does X\n", argv[0]);
-
-
-		/** CUSTOM USER BRIEF HELP ENDS HERE												*********** important ***********		//////////// **/
+		int i = 0;
+		handle_arg_template func = ArgTable[i].handle_function;
+		while(func){
+			if(ArgTable[i].associatedchar == extended_help){
+				printf("\n");
+				printf(ArgTable[i].briefhelp_description, programname); // print help
+				printf("\n");
+			}
+			func = ArgTable[++i].handle_function;
+		}
 		return;
 	}
 	switch (extended_help)
@@ -75,6 +79,7 @@ void printHelp(const char* programname, const char extended_help){
 		while(func){
 			if(ArgTable[i].associatedchar == extended_help){
 				printf(ArgTable[i].extendedhelp_description, programname); // print extended help
+				printf("\n");
 				break;
 			}
 			func = ArgTable[++i].handle_function;

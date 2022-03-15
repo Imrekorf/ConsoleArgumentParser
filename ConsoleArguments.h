@@ -34,9 +34,10 @@ typedef unsigned long(*handle_arg_template)(struct ConsoleArgumentSettings* _CAS
 
 struct nlist {
 	const char* fulltext;		 			// fulltext
-	char associatedchar; 			// single character equivelent of fulltext
-	handle_arg_template handle_function;  // associated function to execute on argument passing
-	const char* extendedhelp_description; // used for more detailed explanations
+	char associatedchar; 					// single character equivelent of fulltext
+	handle_arg_template handle_function;  	// associated function to execute on argument passing
+	const char* briefhelp_description; 		// used for normal ./app -h help description
+	const char* extendedhelp_description; 	// used for more detailed argument explanations with ./app -x -h
 };
 
 int HandleConsoleArgs		(const int   argc, const char **argv);
