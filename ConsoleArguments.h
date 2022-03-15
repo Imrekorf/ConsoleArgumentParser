@@ -1,10 +1,10 @@
 #pragma once
 
-/** @brief the amount of console arguments that should 
- * 	atleast be passed for the program to run, either 0 or 1, 
- * 	either all arguments are optional or there are required 
- * 	arguments with -h as a minimum */
-#define MINIMAL_ARGS_FOR_PROGRAM 1
+/** @brief indicates if there is atleast 1 required argument for the program
+ * set to 1 if there are ANY required arguments
+ * set to 0 if all arguments are optional
+ */
+#define HAS_REQUIRED_ARGUMENTS 0
 
 // change every version
 struct Version{
@@ -17,6 +17,8 @@ struct Version{
 struct ConsoleArgumentSettings{
 	// CUSTOM USER VALUES START HERE
 	// T name = val; // assign default for optional values
+
+	
 	// CUSTOM USER VALUES END HERE
 };
 
@@ -35,7 +37,7 @@ struct ConsoleArgumentSettings{
 
 
 
-
+// don't touch anything after this
 
 enum RETURNVAL {
 	NORMAL_COND 	= 00,
@@ -51,7 +53,7 @@ enum RETURNVAL {
 	UNKOWN_ARG 		= 40,
 };
 
-typedef unsigned long(*handle_arg_template)(struct ConsoleArgumentSettings* _CAS, unsigned long argc, const char** argv, unsigned long index, unsigned long index_offset, RETURNVAL* ret);
+typedef unsigned long(*handle_arg_template)(struct ConsoleArgumentSettings* _CAS, unsigned long argc, const char** argv, unsigned long index, unsigned long index_offset, enum RETURNVAL* ret);
 
 struct nlist {
 	const char* fulltext;		 			// fulltext
