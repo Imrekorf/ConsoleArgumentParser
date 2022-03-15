@@ -6,12 +6,12 @@
  */
 #define HAS_REQUIRED_ARGUMENTS 0
 
+#define MAJORVERSION 1
+#define MINORVERSION 0
+#define BUGFIX		 0
+
 // change every version
-struct Version{
-	const unsigned int Major  = 0;
-	const unsigned int Minor  = 0;
-	const unsigned int Bugfix = 0;
-};
+
 
 // returned console arguments and default settings
 struct ConsoleArgumentSettings{
@@ -53,6 +53,12 @@ enum RETURNVAL {
 	UNKOWN_ARG 		= 40,
 };
 
+struct Version{
+	const unsigned int Major;
+	const unsigned int Minor;
+	const unsigned int Bugfix;
+};
+
 typedef unsigned long(*handle_arg_template)(struct ConsoleArgumentSettings* _CAS, unsigned long argc, const char** argv, unsigned long index, unsigned long index_offset, enum RETURNVAL* ret);
 
 struct nlist {
@@ -63,14 +69,14 @@ struct nlist {
 	const char* extendedhelp_description; 	// used for more detailed argument explanations with ./app -x -h
 };
 
-RETURNVAL HandleConsoleArgs			(const int   argc, const char **argv);
+enum RETURNVAL HandleConsoleArgs	(const int   argc, const char **argv);
 
-unsigned long HelpFullString		(const char* text, const char** argv, unsigned long index, const unsigned long argc, RETURNVAL* ret_val);
-unsigned long HelpSingleChar		(const char* text, const char** argv, unsigned long index, const unsigned long argc, RETURNVAL* ret_val, unsigned long index_offset = 0);
-unsigned long HelpSingleCharParse	(const char  text, const char** argv, unsigned long index, const unsigned long argc, RETURNVAL* ret_val, unsigned long index_offset, const char* fullargname = "");
+unsigned long HelpFullString		(const char* text, const char** argv, unsigned long index, const unsigned long argc, enum RETURNVAL* ret_val);
+unsigned long HelpSingleChar		(const char* text, const char** argv, unsigned long index, const unsigned long argc, enum RETURNVAL* ret_val, unsigned long index_offset);
+unsigned long HelpSingleCharParse	(const char  text, const char** argv, unsigned long index, const unsigned long argc, enum RETURNVAL* ret_val, unsigned long index_offset, const char* fullargname);
 
-void printTooFewArguments			(const char* programname, char argument, const char* fullargname = "");
-void printHelp						(const char* programname, char extended_help = '\0');
+void printTooFewArguments			(const char* programname, char argument, const char* fullargname);
+void printHelp						(const char* programname, char extended_help);
 void printVersion					(const struct Version* V);
 
 void getConsoleArgumentSettings		(struct ConsoleArgumentSettings* CAS);

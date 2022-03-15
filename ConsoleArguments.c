@@ -133,7 +133,7 @@ void getConsoleArgumentSettings(struct ConsoleArgumentSettings* CAS){
  * @brief Struct containing version
  * 
  */
-struct Version _Version;
+struct Version _Version = {1, 0, 0};
 
 /**
  * @brief Get the Software Version object
@@ -352,11 +352,9 @@ void printHelp(const char* programname, const char extended_help){
 		printf("\t-h, --help for this message\n");
 		printf("\t-v, --version for version\n");
 		for(size_t i = 0; i < ARGTABLESIZE; i++){
-			if(ArgTable[i].associatedchar == extended_help){
-				printf("\n");
-				printf(ArgTable[i].briefhelp_description, programname); // print help
-				printf("\n");
-			}
+			printf("\t");
+			printf(ArgTable[i].briefhelp_description, programname); // print help
+			printf("\n");
 		}
 		return;
 	}
