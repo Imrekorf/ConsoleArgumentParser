@@ -125,8 +125,8 @@ struct ConsoleArgumentSettings _CAS;
  * 
  * @param CAS the values gotten from the console arguments
  */
-void getConsoleArgumentSettings(struct ConsoleArgumentSettings* CAS){
-	CAS = &_CAS;
+struct ConsoleArgumentSettings* getConsoleArgumentSettings(){
+	return &_CAS;
 }
 
 /**

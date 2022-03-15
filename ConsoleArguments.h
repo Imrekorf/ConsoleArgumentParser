@@ -79,5 +79,5 @@ void printTooFewArguments			(const char* programname, char argument, const char*
 void printHelp						(const char* programname, char extended_help);
 void printVersion					(const struct Version* V);
 
-void getConsoleArgumentSettings		(struct ConsoleArgumentSettings* CAS);
+struct ConsoleArgumentSettings* getConsoleArgumentSettings		();
 void getSoftwareVersion				(struct Version* _Version);
