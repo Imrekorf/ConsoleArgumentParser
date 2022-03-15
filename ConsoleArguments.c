@@ -314,7 +314,7 @@ size_t HelpSingleChar(const char* text, const char** argv, size_t index, const s
  */
 size_t HelpSingleCharParse(const char text, const char** argv, const size_t index, const size_t argc, enum RETURNVAL* ret_val, size_t index_offset, const char* fullargname){
 	size_t i;
-	char ret;
+	enum RETURNVAL ret;
 	switch (text){
 		case 'h':
 			printHelp(argv[0], '\0');
