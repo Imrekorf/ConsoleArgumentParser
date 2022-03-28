@@ -139,10 +139,11 @@ struct Version _Version = {1, 0, 0};
 /**
  * @brief Get the Software Version object
  * 
- * @param _Version the software version struct
+ * @return the software version struct
  */
-void getSoftwareVersion(struct Version* _V){
-	_V = &_Version;
+struct Version* _V getSoftwareVersion(){
+	static struct Version _V = {MAJORVERSION, MINORVERSION, BUFIX}
+	return &_V;
 }
 
 /**
@@ -322,7 +323,7 @@ size_t HelpSingleCharParse(const char text, const char** argv, const size_t inde
 			*ret_val = RET_AFTER_DONE;
 			break;
 		case 'v':
-			printVersion(&_Version);
+			printVersion(getSoftwareVersion());
 			*ret_val = RET_AFTER_DONE;
 			break;
 		default:
