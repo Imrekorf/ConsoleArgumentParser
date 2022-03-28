@@ -80,4 +80,4 @@ void printHelp						(const char* programname, char extended_help);
 void printVersion					(const struct Version* V);
 
 struct ConsoleArgumentSettings* getConsoleArgumentSettings		();
-void getSoftwareVersion				(struct Version* _Version);
+struct Version* getSoftwareVersion();
