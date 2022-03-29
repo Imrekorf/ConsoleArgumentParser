@@ -141,8 +141,8 @@ struct Version _Version = {1, 0, 0};
  * 
  * @return the software version struct
  */
-struct Version* _V getSoftwareVersion(){
-	static struct Version _V = {MAJORVERSION, MINORVERSION, BUFIX}
+struct Version* getSoftwareVersion(){
+	static struct Version _V = {MAJORVERSION, MINORVERSION, BUGFIX};
 	return &_V;
 }
 
