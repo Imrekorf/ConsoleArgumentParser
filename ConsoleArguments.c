@@ -402,9 +402,9 @@ const char* getProgramName(const char* programpathname){
 	#elif unix
 	const char seperator = '/';
 	#endif
-	char tempname[strlen(programpathname)];
+	char tempname[4096];
 	strcpy(tempname, programpathname);
-	char* appname = strrchr(programpathname, seperator);
+	char* appname = strrchr(tempname, seperator);
 	const char* programname = appname ? ++appname : programpathname;
 	return programname;
 }
