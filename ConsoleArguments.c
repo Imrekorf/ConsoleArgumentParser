@@ -1,4 +1,5 @@
-#include "ConsoleArguments.h"
+#include "ConsoleArgumentParser.h"
+#include "version.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -33,6 +34,9 @@
 
 /** USER CUSTOM COMMAND PREDIFINES END HERE **/
 
+// string is printed by -h option as default usage. Define the default set of arguments you would expect to get the program to work.
+#define DEFAULT_USAGE "Default usage: %s -a <required> -b [optional]\n"
+
 const struct nlist ArgTable[] = {
 	/**
 	 * @brief Entry should contain in order:
@@ -45,8 +49,6 @@ const struct nlist ArgTable[] = {
 	/* {"example", 'e', &handle_example_flag, "-e, --example shows an example argument", 
 		"here comes a detailed explanation for when -h is used on the argument"}, */
 /** USER VALUES FOR ARGUMENT TABLE START HERE **/
-	
-
 
 /** USER VALUES FOR ARGUMENT TABLE END HERE **/
 };
@@ -76,13 +78,10 @@ END_FLAG_PARSER()
 /** argument parser example
 BEGIN_ARG_PARSER(handle_example_arg, 1)
  	_CAS->val = argv[index + 1 + index_offset++]; // <- increases index_offset for the extra argument parsed.
- *ret = NORMAL_COND;
+	*ret = NORMAL_COND;
 END_ARG_PARSER
 */
 /** CUSTOM HANDLERS START HERE **/
-
-
-
 
 
 /** CUSTOM HANDLERS END HERE **/
@@ -346,11 +345,13 @@ unsigned long HelpSingleCharParse(const char text, const char** argv, const unsi
 	return index_offset;
 }
 
+const char* getProgramName(const char* programpathname);
+
 // standard commands:
 void printHelp(const char* programname, const char extended_help){
 	if(!extended_help){
-		printf("Usage: %s [OPTION...] [VALUE]\n", programname);
-		printf("Default usage: %s -r <record_time>\n", programname);
+		printf("Usage: %s [OPTION...] [VALUE]\n", getProgramName(programname));
+		printf(DEFAULT_USAGE, getProgramName(programname));
 		printf("\t-h, --help for this message\n");
 		printf("\t-v, --version for version\n");
 		for(unsigned long i = 0; i < ARGTABLESIZE; i++){
@@ -393,4 +394,17 @@ void printTooFewArguments(const char* programname, const char argument, const ch
 
 void printVersion(const struct Version *V){
 	printf("Current version %d.%d.%d\n", V->Major, V->Minor, V->Bugfix);
+}
+
+const char* getProgramName(const char* programpathname){
+	#ifdef _WIN32
+	const char seperator = '\\';
+	#elif unix
+	const char seperator = '/';
+	#endif
+	char tempname[strlen(programpathname)];
+	strcpy(tempname, programpathname);
+	char* appname = strrchr(programpathname, seperator);
+	const char* programname = appname ? ++appname : programpathname;
+	return programname;
 }
