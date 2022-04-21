@@ -7,12 +7,12 @@
 /**
  * @brief Defines a handler with function_name, &function_name will be a pointer to the function.
  */
-#define DEFINE_HANDLER(function_name) size_t (function_name) (struct ConsoleArgumentSettings* _CAS, size_t argc, const char** argv, size_t index, size_t index_offset, enum RETURNVAL* ret)
+#define DEFINE_HANDLER(function_name) unsigned long (function_name) (struct ConsoleArgumentSettings* _CAS, unsigned long argc, const char** argv, unsigned long index, unsigned long index_offset, enum RETURNVAL* ret)
 /**
  * @brief Indicates the start of a argument parser function. Should be defined with DEFINE_HANDLER(function_name) above ArgTable.
  * @param param_count the amount of parameters used for this argument
  */
-#define BEGIN_ARG_PARSER(function_name, param_count) size_t (function_name) (struct ConsoleArgumentSettings* _CAS, size_t argc, const char** argv, size_t index, size_t index_offset, enum RETURNVAL* ret){ \
+#define BEGIN_ARG_PARSER(function_name, param_count) unsigned long (function_name) (struct ConsoleArgumentSettings* _CAS, unsigned long argc, const char** argv, unsigned long index, unsigned long index_offset, enum RETURNVAL* ret){ \
 		if(index + param_count + index_offset >= argc){*ret = TOO_FEW_ARGS; return 0;}
 /**
  * @brief Indicates the end of an argument parser function.
@@ -21,7 +21,7 @@
 /**
  * @brief Indicates the start of a flag parser function. Should be defined with DEFINE_HANDLER(function_name) above ArgTable.
  */
-#define BEGIN_FLAG_PARSER(function_name) size_t (function_name) (struct ConsoleArgumentSettings* _CAS, size_t argc, const char** argv, size_t index, size_t index_offset, enum RETURNVAL* ret){
+#define BEGIN_FLAG_PARSER(function_name) unsigned long (function_name) (struct ConsoleArgumentSettings* _CAS, unsigned long argc, const char** argv, unsigned long index, unsigned long index_offset, enum RETURNVAL* ret){
 /**
  * @brief Indicates the end of an argument parser function.
  */
@@ -113,7 +113,7 @@ END_ARG_PARSER
  * @brief Indicates the size of the ArgumentTable
  * 
  */
-static size_t ARGTABLESIZE = sizeof(ArgTable)/sizeof(ArgTable[0]);
+static unsigned long ARGTABLESIZE = sizeof(ArgTable)/sizeof(ArgTable[0]);
 
 /**
  * @brief Struct containing set argument values
@@ -163,19 +163,19 @@ enum RETURNVAL HandleConsoleArgs(const int argc, const char **argv){
 
 	for(int i = 1; i < argc; i++){
 		const char* text = argv[i];
-		size_t size = strlen(text);
+		unsigned long size = strlen(text);
 		if(size >= 2){
 			// handle full string
 			if(text[0] == text[1] && text[0] == '-'){
 				// handle --options
 				text+=2; // skip the two --
-				size_t skipargs = HelpFullString(text, argv, i, argc, &ret_val);
+				unsigned long skipargs = HelpFullString(text, argv, i, argc, &ret_val);
 				i+= skipargs;
 			}
 			else{
 				if(text[0] == '-'){
 					text++; // skip -
-					size_t skip_args = HelpSingleChar(text, argv, i, argc, &ret_val, 0);
+					unsigned long skip_args = HelpSingleChar(text, argv, i, argc, &ret_val, 0);
 					i += skip_args;
 				} 
 				else{ // command did not start with - error
@@ -197,13 +197,13 @@ enum RETURNVAL HandleConsoleArgs(const int argc, const char **argv){
  * 
  * @param text the argument to be parsed
  * @param argv the full set of arguments
- * @return size_t the amount of arguments parsed
+ * @return unsigned long the amount of arguments parsed
  */
-size_t HelpFullString(const char* text, const char** argv, size_t index, const size_t argc, enum RETURNVAL* ret_val){
+unsigned long HelpFullString(const char* text, const char** argv, unsigned long index, const unsigned long argc, enum RETURNVAL* ret_val){
 	char converted_single_char = '\0';
 	char should_printhelp = '\0';
 	if(argc > index + 1){ // there is another argument after this one ( check if it's help )
-		size_t next_arg_str_len = strlen(argv[index+1]);
+		unsigned long next_arg_str_len = strlen(argv[index+1]);
 		if(next_arg_str_len > 2 && argv[index+1][0] == argv[index+1][1] && argv[index+1][0] == '-'){
 			// full string
 			if(strcmp(argv[index+1], "help")){
@@ -226,7 +226,7 @@ size_t HelpFullString(const char* text, const char** argv, size_t index, const s
 		converted_single_char = 'v';
 	}
 	// CUSTOM ARGUMENTS START HERE
-	for(size_t i = 0; i < ARGTABLESIZE; i++){
+	for(unsigned long i = 0; i < ARGTABLESIZE; i++){
 		if(!strcmp(text, ArgTable[i].fulltext)){
 			converted_single_char = ArgTable[i].associatedchar;
 			break;
@@ -257,12 +257,12 @@ size_t HelpFullString(const char* text, const char** argv, size_t index, const s
  * @param argc the full amount of arguments
  * @param ret_val buffer that will containing resulting code for last executed argument
  * @param index_offset used for recursion, indicates the position of the next value associated with a possible argument
- * @return size_t the amount of arguments parsed
+ * @return unsigned long the amount of arguments parsed
  */
-size_t HelpSingleChar(const char* text, const char** argv, size_t index, const size_t argc, enum RETURNVAL* ret_val, size_t index_offset){
+unsigned long HelpSingleChar(const char* text, const char** argv, unsigned long index, const unsigned long argc, enum RETURNVAL* ret_val, unsigned long index_offset){
 	char should_printhelp = '\0';
 	if(argc > index + 1){ // there is another argument after this one ( check if it's help )
-		size_t next_arg_str_len = strlen(argv[index+1]);
+		unsigned long next_arg_str_len = strlen(argv[index+1]);
 		if(next_arg_str_len > 2 && argv[index+1][0] == argv[index+1][1] && argv[index+1][0] == '-'){
 			// full string
 			if(strcmp(argv[index+1], "help")){
@@ -280,7 +280,7 @@ size_t HelpSingleChar(const char* text, const char** argv, size_t index, const s
 	}
 	
 	// check how many characters we have
-	size_t text_size = strlen(text);
+	unsigned long text_size = strlen(text);
 	if(text_size > 0){ // there is atleast 1 char
 		if(should_printhelp){
 			printHelp(argv[0], text[0]);
@@ -312,10 +312,10 @@ size_t HelpSingleChar(const char* text, const char** argv, size_t index, const s
  * @param ret_val buffer that will containing resulting code for last executed argument
  * @param index_offset used for recursion, indicates the position of the next value associated with a possible argument
  * @param fullargname used for errors when called from HelpFullString()
- * @return size_t the amount of arguments parsed
+ * @return unsigned long the amount of arguments parsed
  */
-size_t HelpSingleCharParse(const char text, const char** argv, const size_t index, const size_t argc, enum RETURNVAL* ret_val, size_t index_offset, const char* fullargname){
-	size_t i;
+unsigned long HelpSingleCharParse(const char text, const char** argv, const unsigned long index, const unsigned long argc, enum RETURNVAL* ret_val, unsigned long index_offset, const char* fullargname){
+	unsigned long i;
 	enum RETURNVAL ret;
 	switch (text){
 		case 'h':
@@ -353,7 +353,7 @@ void printHelp(const char* programname, const char extended_help){
 		printf("Default usage: %s -r <record_time>\n", programname);
 		printf("\t-h, --help for this message\n");
 		printf("\t-v, --version for version\n");
-		for(size_t i = 0; i < ARGTABLESIZE; i++){
+		for(unsigned long i = 0; i < ARGTABLESIZE; i++){
 			printf("\t");
 			printf(ArgTable[i].briefhelp_description, programname); // print help
 			printf("\n");
@@ -369,7 +369,7 @@ void printHelp(const char* programname, const char extended_help){
 		printf("print's the current running software version.\n");
 		break;
 	default:
-		for(size_t i = 0; i < ARGTABLESIZE; i++){
+		for(unsigned long i = 0; i < ARGTABLESIZE; i++){
 			if(ArgTable[i].associatedchar == extended_help){
 				printf(ArgTable[i].extendedhelp_description, programname); // print extended help
 				printf("\n");
