@@ -11,3 +11,4 @@ if(ret){
 	return 0; // return on specific functions
 }
 ```
+For a more C++ like experience see the reworked [version](https://github.com/Imrekorf/ConsoleArgumentCpp)
